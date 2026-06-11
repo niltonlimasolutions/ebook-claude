@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ebook Gratuito — Claude do Zero ao Avançado · Nilton Lima</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --bg:     #0a0a0a;
+  --bg2:    #141414;
+  --bg3:    #1e1e1e;
+  --orange: #FF6B2B;
+  --orange2:#FF8C5A;
+  --odim:   rgba(255,107,43,0.10);
+  --obord:  rgba(255,107,43,0.28);
+  --white:  #F5F5F5;
+  --gray:   #888;
+  --muted:  #AAAAAA;
+  --green:  #2ECC71;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BACKGROUND ── */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,107,43,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,43,0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.bg-glow {
+  position: fixed; z-index: 0; pointer-events: none;
+  width: 800px; height: 800px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,107,43,0.07) 0%, transparent 65%);
+  top: -200px; right: -200px;
+}
+.bg-glow2 {
+  position: fixed; z-index: 0; pointer-events: none;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 65%);
+  bottom: -100px; left: -100px;
+}
+
+/* ── LAYOUT ── */
+.page {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,107,43,0.10);
+  padding: 0 32px;
+  height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-size: 13px; font-weight: 800;
+  color: var(--orange); letter-spacing: .5px;
+}
+.nav-cta {
+  background: var(--orange); color: #000;
+  font-size: 12px; font-weight: 700;
+  padding: 7px 18px; border-radius: 100px;
+  text-decoration: none; letter-spacing: .3px;
+  transition: opacity .2s;
+}
+.nav-cta:hover { opacity: .85; }
+
+/* ── HERO ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 60px;
+  align-items: center;
+  min-height: calc(100vh - 52px);
+  padding: 80px 0 60px;
+}
+
+.hero-left { display: flex; flex-direction: column; gap: 0; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--odim); border: 1px solid var(--obord);
+  color: var(--orange); padding: 6px 16px; border-radius: 100px;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 28px;
+  width: fit-content;
+}
+.badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--orange);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .4; transform: scale(1.3); }
+}
+
+.hero-h1 {
+  font-size: clamp(36px, 4.5vw, 60px);
+  font-weight: 900; line-height: 1.08;
+  margin-bottom: 20px; letter-spacing: -.5px;
+}
+.hero-h1 em { color: var(--orange); font-style: normal; }
+.hero-h1 .line-dim { color: #444; }
+
+.hero-sub {
+  font-size: 17px; color: var(--muted); line-height: 1.8;
+  max-width: 500px; margin-bottom: 36px;
+}
+
+/* proof strip */
+.proof-strip {
+  display: flex; gap: 24px; align-items: center;
+  margin-bottom: 40px; flex-wrap: wrap;
+}
+.proof-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted);
+}
+.proof-item svg { color: var(--green); flex-shrink: 0; }
+.proof-item strong { color: var(--white); }
+
+/* author */
+.author-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px;
+  background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  width: fit-content;
+}
+.avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--orange);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900; color: #000; flex-shrink: 0;
+}
+.author-name { font-size: 14px; font-weight: 700; }
+.author-role { font-size: 11px; color: var(--orange); font-weight: 600; letter-spacing: .5px; }
+
+/* ── FORM CARD ── */
+.form-card {
+  background: linear-gradient(160deg, #181818 0%, #101010 100%);
+  border: 1px solid var(--obord);
+  border-radius: 20px;
+  padding: 40px 36px;
+  box-shadow: 0 0 80px rgba(255,107,43,0.08), 0 32px 64px rgba(0,0,0,0.5);
+  position: sticky; top: 72px;
+}
+
+.form-card-title {
+  font-size: 20px; font-weight: 800;
+  line-height: 1.3; margin-bottom: 6px;
+}
+.form-card-title span { color: var(--orange); }
+.form-card-sub {
+  font-size: 13px; color: var(--muted); margin-bottom: 28px; line-height: 1.6;
+}
+
+/* ebook mockup */
+.ebook-preview {
+  background: linear-gradient(135deg, #1c0e05, #0a0a0a);
+  border: 1px solid var(--obord);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 16px;
+  position: relative; overflow: hidden;
+}
+.ebook-preview::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,107,43,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,43,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.ebook-preview > * { position: relative; z-index: 1; }
+.ebook-icon {
+  width: 54px; height: 66px; border-radius: 6px;
+  background: linear-gradient(135deg, var(--orange), #c94d1a);
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; flex-shrink: 0;
+  font-size: 22px; font-weight: 900; color: #000;
+  box-shadow: 0 4px 16px rgba(255,107,43,0.4);
+}
+.ebook-info .title { font-size: 13px; font-weight: 700; color: var(--white); }
+.ebook-info .meta { font-size: 11px; color: var(--gray); margin-top: 3px; }
+.ebook-tag {
+  position: absolute; top: 12px; right: 14px;
+  background: var(--green); color: #000;
+  font-size: 10px; font-weight: 700; padding: 3px 8px;
+  border-radius: 100px; letter-spacing: 1px; text-transform: uppercase;
+}
+
+/* form fields */
+.field { margin-bottom: 14px; }
+.field label {
+  display: block; font-size: 11px; font-weight: 600;
+  color: var(--muted); letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.field input, .field select {
+  width: 100%; padding: 13px 16px;
+  background: var(--bg3);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  color: var(--white); font-family: 'Inter', sans-serif;
+  font-size: 14px; transition: border-color .2s, box-shadow .2s;
+  outline: none; appearance: none;
+}
+.field input::placeholder { color: #555; }
+.field input:focus, .field select:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255,107,43,0.12);
+}
+.field select option { background: var(--bg3); color: var(--white); }
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--orange);
+  color: #000; font-family: 'Inter', sans-serif;
+  font-size: 15px; font-weight: 800;
+  border: none; border-radius: 12px; cursor: pointer;
+  letter-spacing: .3px; margin-top: 6px;
+  transition: transform .15s, box-shadow .15s, opacity .15s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(255,107,43,0.35);
+}
+.submit-btn:active { transform: translateY(0); }
+
+.form-privacy {
+  text-align: center; margin-top: 14px;
+  font-size: 11px; color: #444; line-height: 1.6;
+}
+
+/* ── SUCCESS STATE ── */
+.success-state {
+  display: none;
+  text-align: center; padding: 20px 0;
+}
+.success-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(46,204,113,0.12);
+  border: 2px solid rgba(46,204,113,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; margin: 0 auto 20px;
+  animation: pop .4s cubic-bezier(.175,.885,.32,1.275);
+}
+@keyframes pop {
+  from { transform: scale(.5); opacity: 0; }
+  to   { transform: scale(1);  opacity: 1; }
+}
+.success-title {
+  font-size: 22px; font-weight: 800; margin-bottom: 10px;
+}
+.success-title span { color: var(--green); }
+.success-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.7; }
+.download-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--green); color: #000;
+  font-size: 14px; font-weight: 800;
+  padding: 14px 28px; border-radius: 12px;
+  text-decoration: none; transition: opacity .2s;
+  letter-spacing: .3px;
+}
+.download-btn:hover { opacity: .85; }
+
+/* ── SOCIAL PROOF ── */
+.social-proof {
+  padding: 80px 0;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.sp-title {
+  text-align: center;
+  font-size: clamp(22px, 3vw, 32px); font-weight: 800;
+  margin-bottom: 12px;
+}
+.sp-title span { color: var(--orange); }
+.sp-sub {
+  text-align: center; font-size: 15px; color: var(--muted);
+  margin-bottom: 48px;
+}
+
+.chapters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.chapter-card {
+  background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 20px;
+  transition: border-color .2s;
+}
+.chapter-card:hover { border-color: var(--obord); }
+.ch-num-sm {
+  font-size: 11px; font-weight: 700; color: var(--orange);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;
+}
+.ch-name {
+  font-size: 15px; font-weight: 700; color: var(--white);
+  margin-bottom: 6px; line-height: 1.4;
+}
+.ch-desc { font-size: 12px; color: var(--gray); line-height: 1.6; }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  display: flex; justify-content: center; gap: 64px;
+  padding: 56px 0;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  margin: 0 0 80px;
+  flex-wrap: wrap;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-size: 42px; font-weight: 900; color: var(--orange);
+  line-height: 1; margin-bottom: 4px;
+}
+.stat-lbl { font-size: 12px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── FOR WHOM ── */
+.for-whom {
+  padding: 80px 0;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.fw-title {
+  font-size: clamp(22px, 3vw, 32px); font-weight: 800;
+  margin-bottom: 8px;
+}
+.fw-title span { color: var(--orange); }
+.fw-sub { font-size: 15px; color: var(--muted); margin-bottom: 40px; }
+.fw-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.fw-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 18px 20px;
+  background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+}
+.fw-icon {
+  width: 38px; height: 38px; border-radius: 8px;
+  background: var(--odim); border: 1px solid var(--obord);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.fw-text strong { font-size: 14px; display: block; margin-bottom: 3px; }
+.fw-text p { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+/* ── FINAL CTA ── */
+.final-cta {
+  padding: 80px 0;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.final-cta-title {
+  font-size: clamp(28px, 4vw, 48px); font-weight: 900;
+  line-height: 1.1; margin-bottom: 16px;
+}
+.final-cta-title em { color: var(--orange); font-style: normal; }
+.final-cta-sub { font-size: 16px; color: var(--muted); margin-bottom: 32px; }
+.final-cta-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--orange); color: #000;
+  font-size: 16px; font-weight: 800;
+  padding: 18px 40px; border-radius: 14px;
+  text-decoration: none; transition: transform .15s, box-shadow .15s;
+  letter-spacing: .3px;
+}
+.final-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(255,107,43,0.35);
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 32px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  text-align: center;
+  font-size: 12px; color: #333;
+}
+footer a { color: var(--orange); text-decoration: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 40px 0 60px;
+  }
+  .form-card { position: static; }
+  .fw-grid { grid-template-columns: 1fr; }
+  .stats-bar { gap: 36px; }
+}
+@media (max-width: 540px) {
+  nav { padding: 0 16px; }
+  .page { padding: 0 16px; }
+  .form-card { padding: 28px 20px; }
+  .proof-strip { flex-direction: column; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Applied AI Lead · Nilton Lima</div>
+  <a href="#form" class="nav-cta">↓ Baixar grátis</a>
+</nav>
+
+<!-- HERO -->
+<section class="page">
+  <div class="hero">
+
+    <!-- LEFT -->
+    <div class="hero-left">
+      <div class="badge">
+        <div class="badge-dot"></div>
+        Ebook gratuito · 2026
+      </div>
+
+      <h1 class="hero-h1">
+        Do <em>zero</em> ao<br>
+        avançado no Claude<br>
+        <span class="line-dim">em 9 capítulos.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Tudo que eu aprendi usando o Claude todo dia no trabalho —
+        prompts que funcionam, atalhos reais, e como sair de
+        "chatbot básico" para uma ferramenta que entrega resultado.
+      </p>
+
+      <div class="proof-strip">
+        <div class="proof-item">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>9 capítulos</strong> práticos</span>
+        </div>
+        <div class="proof-item">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Prompts prontos</strong> para copiar</span>
+        </div>
+        <div class="proof-item">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>100% gratuito</strong></span>
+        </div>
+      </div>
+
+      <div class="author-row">
+        <div class="avatar">NL</div>
+        <div>
+          <div class="author-name">Nilton Lima</div>
+          <div class="author-role">Applied AI Lead · linkedin.com/in/niltonlimafilho</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="form-card" id="form">
+
+      <div class="ebook-preview">
+        <div class="ebook-icon">AI</div>
+        <div class="ebook-info">
+          <div class="title">Claude do Zero ao Avançado</div>
+          <div class="meta">Nilton Lima · PDF · 9 Capítulos</div>
+        </div>
+        <div class="ebook-tag">GRÁTIS</div>
+      </div>
+
+      <div class="form-card-title">Receba o ebook <span>agora</span></div>
+      <p class="form-card-sub">Preencha abaixo para liberar o download. É rápido — menos de 30 segundos.</p>
+
+      <!-- FORM -->
+      <div id="leadForm">
+        <div class="field">
+          <label>Seu nome</label>
+          <input type="text" id="nome" placeholder="Como prefere ser chamado(a)?" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label>E-mail profissional</label>
+          <input type="email" id="email" placeholder="seu@email.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <label>Área de atuação</label>
+          <select id="area">
+            <option value="" disabled selected>Selecione sua área...</option>
+            <option value="marketing">Marketing / Comunicação</option>
+            <option value="tecnologia">Tecnologia / TI</option>
+            <option value="financas">Finanças / Contabilidade</option>
+            <option value="rh">RH / Gestão de Pessoas</option>
+            <option value="vendas">Vendas / Comercial</option>
+            <option value="operacoes">Operações / Processos</option>
+            <option value="juridico">Jurídico / Compliance</option>
+            <option value="educacao">Educação / Treinamento</option>
+            <option value="empreendedor">Empreendedor / Dono de negócio</option>
+            <option value="estudante">Estudante</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+
+        <button class="submit-btn" onclick="handleSubmit()">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Baixar ebook grátis
+        </button>
+
+        <p class="form-privacy">🔒 Sem spam. Seus dados são protegidos e usados apenas para enviar conteúdo sobre IA e produtividade.</p>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="success-state" id="successState">
+        <div class="success-icon">✓</div>
+        <div class="success-title">Pronto, <span id="firstName"></span>!</div>
+        <p class="success-sub">Seu ebook está liberado.<br>Clique abaixo para fazer o download.</p>
+        <a href="ebook_claude_linkedin.html" class="download-btn" target="_blank">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Baixar agora
+        </a>
+        <p style="font-size:12px;color:#444;margin-top:20px;">Siga no LinkedIn para mais conteúdo sobre IA →<br><a href="https://linkedin.com/in/niltonlimafilho" target="_blank" style="color:var(--orange);font-weight:600;">linkedin.com/in/niltonlimafilho</a></p>
+      </div>
+
+    </div>
+    <!-- /FORM CARD -->
+
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="page">
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">9</div>
+      <div class="stat-lbl">Capítulos</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">40+</div>
+      <div class="stat-lbl">Prompts prontos</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">0</div>
+      <div class="stat-lbl">Custo</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">∞</div>
+      <div class="stat-lbl">Produtividade</div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTERS -->
+<section class="page social-proof">
+  <div class="sp-title">O que você vai <span>aprender</span></div>
+  <p class="sp-sub">9 capítulos do básico ao avançado — sem enrolação.</p>
+
+  <div class="chapters-grid">
+    <div class="chapter-card">
+      <div class="ch-num-sm">Cap 01</div>
+      <div class="ch-name">O que é o Claude e por que ele importa</div>
+      <div class="ch-desc">Entenda a diferença entre ferramentas e como posicionar o Claude no seu dia a dia.</div>
+    </div>
+    <div class="chapter-card">
+      <div class="ch-num-sm">Cap 02</div>
+      <div class="ch-name">Interface e primeiros passos</div>
+      <div class="ch-desc">Navegação, modelos, Projetos e configurações que a maioria ignora.</div>
+    </div>
+    <div class="chapter-card">
+      <div class="ch-num-sm">Cap 03</div>
+      <div class="ch-name">A arte de fazer prompts que funcionam</div>
+      <div class="ch-desc">A estrutura que separa respostas medianas de respostas excepcionais.</div>
+    </div>
+    <div class="chapter-card">
+      <div class="ch-num-sm">Cap 04</div>
+      <div class="ch-name">Projetos e memória persistente</div>
+      <div class="ch-desc">Como manter contexto entre conversas e criar um assistente que te conhece.</div>
+    </div>
+    <div class="chapter-card">
+      <div class="ch-num-sm">Cap 05</div>
+      <div class="ch-name">Claude para escrita profissional</div>
+      <div class="ch-desc">E-mails, relatórios, propostas e documentos que parecem humanos.</div>
+    </div>
+    <div class="chapter-card">
+      <div class="ch-num-sm">Cap 06</div>
+      <div class="ch-name">Análise de dados e documentos</div>
+      <div class="ch-desc">Faça o Claude ler contratos, planilhas e relatórios por você.</div>
+    </div>
+    <div class="chapter-card">
+      <div class="ch-num-sm">Cap 07</div>
+      <div class="ch-name">Claude para código e automação</div>
+      <div class="ch-desc">Scripts reais, Apps Script, debugging e automação de fluxos.</div>
+    </div>
+    <div class="chapter-card">
+      <div class="ch-num-sm">Cap 08</div>
+      <div class="ch-name">Conectores: Gmail, Drive e Calendar</div>
+      <div class="ch-desc">Transforme o Claude num colaborador conectado ao seu ecossistema.</div>
+    </div>
+    <div class="chapter-card">
+      <div class="ch-num-sm">Cap 09</div>
+      <div class="ch-name">Casos de uso reais do meu dia a dia</div>
+      <div class="ch-desc">Automações, análises e documentos que uso toda semana — pegue e adapte.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHOM -->
+<section class="page for-whom">
+  <div class="fw-title">Este ebook é <span>para você</span> se...</div>
+  <p class="fw-sub">Não importa sua área — se você trabalha com informação, o Claude pode te ajudar.</p>
+  <div class="fw-grid">
+    <div class="fw-item">
+      <div class="fw-icon">💼</div>
+      <div class="fw-text">
+        <strong>Você usa IA mas não aproveita nem 30%</strong>
+        <p>Sabe que tem potencial, mas não sabe como extrair o máximo.</p>
+      </div>
+    </div>
+    <div class="fw-item">
+      <div class="fw-icon">⏱️</div>
+      <div class="fw-text">
+        <strong>Passa horas em tarefas que poderiam levar minutos</strong>
+        <p>Relatórios, e-mails, análises, código — tudo pode ser mais rápido.</p>
+      </div>
+    </div>
+    <div class="fw-item">
+      <div class="fw-icon">🚀</div>
+      <div class="fw-text">
+        <strong>Quer se destacar no mercado em 2026</strong>
+        <p>Quem sabe usar IA bem vai entregar o dobro com metade do esforço.</p>
+      </div>
+    </div>
+    <div class="fw-item">
+      <div class="fw-icon">📚</div>
+      <div class="fw-text">
+        <strong>Quer aprender com quem usa na prática</strong>
+        <p>Nada teórico — só o que funciona no trabalho real, testado no dia a dia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="page final-cta">
+  <h2 class="final-cta-title">
+    Comece agora.<br>
+    É <em>de graça</em>.
+  </h2>
+  <p class="final-cta-sub">Leva menos de 30 segundos para liberar o download.</p>
+  <a href="#form" class="final-cta-btn">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Quero o ebook gratuito
+  </a>
+</section>
+
+<footer>
+  <p>© 2026 Nilton Lima · Applied AI Lead ·
+  <a href="https://linkedin.com/in/niltonlimafilho" target="_blank">linkedin.com/in/niltonlimafilho</a></p>
+</footer>
+
+<script>
+// ─────────────────────────────────────────────────────────
+//  Cole aqui a URL do seu Web App após publicar no Apps Script
+// ─────────────────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'COLE_AQUI_A_URL_DO_SEU_WEB_APP';
+
+async function handleSubmit() {
+  const nome  = document.getElementById('nome').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const area  = document.getElementById('area').value;
+
+  if (!nome)  { shake('nome');  return; }
+  if (!email || !email.includes('@')) { shake('email'); return; }
+  if (!area)  { shake('area');  return; }
+
+  // Desabilita botão e mostra loading
+  const btn = document.querySelector('.submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-opacity=".25"/><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor"/></svg> Salvando...';
+  btn.style.opacity = '.7';
+
+  const lead = {
+    nome,
+    email,
+    area,
+    source: 'linkedin_ebook',
+    ts: new Date().toISOString()
+  };
+
+  try {
+    // Envia para o Google Apps Script (no-cors porque o Apps Script não retorna CORS headers em modo redirect)
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(lead)
+    });
+  } catch (err) {
+    // Mesmo com erro de rede, libera o download — não perde o usuário
+    console.warn('Apps Script fetch error (ignorado):', err);
+  }
+
+  // Mostra nome no sucesso
+  document.getElementById('firstName').textContent = nome.split(' ')[0];
+
+  // Troca form por sucesso
+  document.getElementById('leadForm').style.display = 'none';
+  const s = document.getElementById('successState');
+  s.style.display = 'block';
+  s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function shake(id) {
+  const el = document.getElementById(id);
+  el.style.animation = 'none';
+  el.style.borderColor = '#FF4444';
+  el.style.boxShadow = '0 0 0 3px rgba(255,68,68,0.15)';
+  el.focus();
+  setTimeout(() => {
+    el.style.borderColor = '';
+    el.style.boxShadow = '';
+  }, 1800);
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>
